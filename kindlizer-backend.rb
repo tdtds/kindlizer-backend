@@ -5,15 +5,53 @@
 # Copyright (C) 2011 by TADA Tadashi <t@tdtds.jp>
 #
 require 'clockwork'
+require 'uri'
+require 'open-uri'
+require 'yaml'
 
 module KindlizerBackend
-	def self.exec_task( time )
-		p time
+	class Config
+		def initialize( uri )
+			@uri = URI( uri )
+			@conf = {}
+			load
+		end
+
+		def []( key )
+			@conf[key.to_sym]
+		end
+
+		def task( hour )
+			@conf[:task][hour.to_i]
+		end
+
+	:private
+		def load
+			@conf = YAML::load( open( @uri, {:proxy => nil}, &:read ) )
+		end
+	end
+
+	def self.exec_task( conf )
+		now = Time::now
+		p "Staring action on #{now}."
+
+		# relaoding config
+		begin
+			conf_new = Config::new( ENV['KINDLIZER_CONFIG'] )
+			conf = conf_new
+		rescue
+			p 'failed config reloading, then using previous settings.'
+		end
+
+		# executing tasks
+		p conf.task( now.hour )
 	end
 
 	Clockwork::handler do |time|
 		exec_task( time )
 	end
 
-	Clockwork::every( 1.hour, Time::now, :at => '*:04' )
+	conf = Config::new( ENV['KINDLIZER_CONFIG'] )
+	Clockwork::every( 1.hour, conf, :at => '*:04' )
+	#Clockwork::every( 1.minute, conf ) ### for testing
 end
