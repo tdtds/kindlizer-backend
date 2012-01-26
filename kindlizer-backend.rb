@@ -25,7 +25,16 @@ module KindlizerBackend
 			@conf[:task][hour.to_i]
 		end
 
-	:private
+		def replace( conf_new )
+			conf_new.update( @conf )
+		end
+
+	protected
+		def update( hash )
+			hash.update( @conf )
+		end
+
+	private
 		def load
 			@conf = YAML::load( open( @uri, {:proxy => nil}, &:read ) )
 		end
@@ -38,7 +47,7 @@ module KindlizerBackend
 		# relaoding config
 		begin
 			conf_new = Config::new( ENV['KINDLIZER_CONFIG'] )
-			conf = conf_new
+			conf.replace( conf_new )
 		rescue
 			p 'failed config reloading, then using previous settings.'
 		end
