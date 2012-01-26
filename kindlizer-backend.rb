@@ -50,7 +50,7 @@ module KindlizerBackend
 			@generator = Kindlizer::Generator.const_get( name.capitalize.gsub( /-(.)/ ){|s|$1.capitalize} )
 		end
 
-		def run
+		def run( to, from )
 			Dir.mktmpdir do |dir|
 				@generator::new( dir ).generate do |opf|
 					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
@@ -79,7 +79,7 @@ module KindlizerBackend
 
 		# executing tasks
 		conf.task( now.hour ).each do |task|
-			Task::new( task ).run
+			Task::new( task ).run( conf[:mailto], conf[:mailfrom] )
 		end
 	end
 
