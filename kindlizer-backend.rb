@@ -8,6 +8,8 @@ require 'clockwork'
 require 'uri'
 require 'open-uri'
 require 'yaml'
+require 'kindlegen'
+require 'pathname'
 
 $: << './lib'
 
@@ -24,7 +26,7 @@ module KindlizerBackend
 		end
 
 		def task( hour )
-			@conf[:task][hour.to_i]
+			@conf[:task][hour.to_i] || []
 		end
 
 		def replace( conf_new )
@@ -51,7 +53,13 @@ module KindlizerBackend
 		def run
 			Dir.mktmpdir do |dir|
 				@generator::new( dir ).generate do |opf|
-					p "#{opf} generated!"
+					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
+					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
+					if mobi.file?
+						p "generated #{mobi} successfully."
+					else
+						p 'failed mobi generation.'
+					end
 				end
 			end
 		end
