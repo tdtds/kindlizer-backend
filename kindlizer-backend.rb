@@ -9,6 +9,8 @@ require 'uri'
 require 'open-uri'
 require 'yaml'
 
+$: << './lib'
+
 module KindlizerBackend
 	class Config
 		def initialize( uri )
@@ -40,6 +42,21 @@ module KindlizerBackend
 		end
 	end
 
+	class Task
+		def initialize( name )
+			require "kindlizer/generator/#{name}"
+			@generator = Kindlizer::Generator.const_get( name.capitalize.gsub( /-(.)/ ){|s|$1.capitalize} )
+		end
+
+		def run
+			Dir.mktmpdir do |dir|
+				@generator::new( dir ).generate do |opf|
+					p "#{opf} generated!"
+				end
+			end
+		end
+	end
+
 	def self.exec_task( conf )
 		now = Time::now
 		p "Staring action on #{now}."
@@ -53,7 +70,9 @@ module KindlizerBackend
 		end
 
 		# executing tasks
-		p conf.task( now.hour )
+		conf.task( now.hour ).each do |task|
+			Task::new( task ).run
+		end
 	end
 
 	Clockwork::handler do |time|
