@@ -88,6 +88,6 @@ module KindlizerBackend
 	end
 
 	conf = Config::new( ENV['KINDLIZER_CONFIG'] )
-	#Clockwork::every( 1.hour, conf, :at => '*:04' )
-	Clockwork::every( 1.hour, conf ) ### for testing
+	Clockwork::every( 1.hour, conf, :at => '*:04' )
+	#Clockwork::every( 1.hour, conf ) ### for testing
 end
