@@ -115,12 +115,19 @@ module KindlizerBackend
 		end
 		Clockwork::every( 1.hour, conf, :at => '*:04' )
 	else
-		raise 'cannot found ENV["SMTP"].' unless ENV['SMTP']
-		server, port = ENV['SMTP'].split( /:/ )
+		require 'pit'
+		auth = Pit::get( 'Gmail', :require => {
+			'mail' => 'Your Gmail address',
+			'pass' => 'Your Gmail Password'
+		} )
 		Mail.defaults do # using sendgrid plugin
 			delivery_method :smtp, {
-				:address => server,
-				:port => (port || '25'),
+				address: 'smtp.gmail.com',
+				port: '587',
+				user_name: auth['mail'],
+				password: auth['pass'],
+				:authentication => :plain,
+				:enable_starttls_auto => true
 			}
 		end
 		Clockwork::every( 1.hour, conf ) ### for testing
