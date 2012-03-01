@@ -13,6 +13,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     nokogiri (1.5.0)
+    pit (0.0.6)
     polyglot (0.3.3)
     rack (1.4.1)
     systemu (2.4.2)
@@ -32,4 +33,5 @@ DEPENDENCIES
   kindlegen
   mail
   nokogiri
+  pit
   thin
