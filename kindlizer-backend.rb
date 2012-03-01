@@ -10,6 +10,7 @@ require 'open-uri'
 require 'yaml'
 require 'kindlegen'
 require 'pathname'
+require 'mail'
 
 $: << './lib'
 
@@ -57,10 +58,21 @@ module KindlizerBackend
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
 						p "generated #{mobi} successfully."
+						deliver( to, from, mobi )
 					else
 						p 'failed mobi generation.'
 					end
 				end
+			end
+		end
+
+		def deliver( to_address, from_address, mobi )
+			Mail.deliver do
+				from from_address
+				to  to_address
+				subject 'sent by kindlizer'
+				body ''
+				add_file mobi.to_s
 			end
 		end
 	end
@@ -88,6 +100,29 @@ module KindlizerBackend
 	end
 
 	conf = Config::new( ENV['KINDLIZER_CONFIG'] )
-	Clockwork::every( 1.hour, conf, :at => '*:04' )
-	#Clockwork::every( 1.hour, conf ) ### for testing
+
+	if ENV['RACK_ENV'] == 'production'
+		Mail.defaults do # using sendgrid plugin
+			delivery_method :smtp, {
+				:address => 'smtp.example.com',
+				:port => '25',
+				:domain => 'heroku.com',
+				:user_name => ENV['SENDGRID_USERNAME'],
+				:password => ENV['SENDGRID_PASSWORD'],
+				:authentication => :plain,
+				:enable_starttls_auto => true
+			}
+		end
+		Clockwork::every( 1.hour, conf, :at => '*:04' )
+	else
+		raise 'cannot found ENV["SMTP"].' unless ENV['SMTP']
+		server, port = ENV['SMTP'].split( /:/ )
+		Mail.defaults do # using sendgrid plugin
+			delivery_method :smtp, {
+				:address => server,
+				:port => (port || '25'),
+			}
+		end
+		Clockwork::every( 1.hour, conf ) ### for testing
+	end
 end
