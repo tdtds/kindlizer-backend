@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8; -*-
+$: << './lib'
+require 'kindlizer/backend'
+require 'kindlegen'
+
+ARGV.each do |task|
+	require "kindlizer/generator/#{task}"
+	gen = Kindlizer::Generator.const_get( task.split(/-/).map{|a| a.capitalize}.join )
+	Dir::mkdir( task )
+	gen.new( task ).generate do |opf|
+		Kindlegen.run( opf, '-o', "#{task}.mobi" )
+	end
+end
