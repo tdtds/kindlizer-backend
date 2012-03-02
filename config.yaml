@@ -1,6 +1,7 @@
 ---
 :mailto: exsample@free.kindle.com
 :mailfrom: hoge@example.com
+:tz: +0900
 :task:
   4:
   - nikkei-free

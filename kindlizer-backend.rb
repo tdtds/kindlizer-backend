@@ -7,76 +7,14 @@
 require 'clockwork'
 require 'uri'
 require 'open-uri'
-require 'yaml'
 require 'kindlegen'
 require 'pathname'
 require 'mail'
 
 $: << './lib'
+require 'kindlizer/backend'
 
-module KindlizerBackend
-	class Config
-		def initialize( uri )
-			@uri = URI( uri )
-			@conf = {}
-			load
-		end
-
-		def []( key )
-			@conf[key.to_sym]
-		end
-
-		def task( hour )
-			@conf[:task][hour.to_i] || []
-		end
-
-		def replace( conf_new )
-			conf_new.update( @conf )
-		end
-
-	protected
-		def update( hash )
-			hash.update( @conf )
-		end
-
-	private
-		def load
-			@conf = YAML::load( open( @uri, {:proxy => nil}, &:read ) )
-		end
-	end
-
-	class Task
-		def initialize( name )
-			require "kindlizer/generator/#{name}"
-			@generator = Kindlizer::Generator.const_get( name.capitalize.gsub( /-(.)/ ){|s|$1.capitalize} )
-		end
-
-		def run( to, from )
-			Dir.mktmpdir do |dir|
-				@generator::new( dir ).generate do |opf|
-					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
-					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
-					if mobi.file?
-						p "generated #{mobi} successfully."
-						deliver( to, from, mobi )
-					else
-						p 'failed mobi generation.'
-					end
-				end
-			end
-		end
-
-		def deliver( to_address, from_address, mobi )
-			Mail.deliver do
-				from from_address
-				to  to_address
-				subject 'sent by kindlizer'
-				body ''
-				add_file mobi.to_s
-			end
-		end
-	end
-
+module Kindlizer::Backend
 	def self.exec_task( conf )
 		now = Time::now
 		p "Staring action on #{now}."
