@@ -5,10 +5,6 @@
 # Copyright (C) 2011 by TADA Tadashi <t@tdtds.jp>
 #
 require 'clockwork'
-require 'uri'
-require 'open-uri'
-require 'kindlegen'
-require 'pathname'
 require 'mail'
 
 $: << './lib'
