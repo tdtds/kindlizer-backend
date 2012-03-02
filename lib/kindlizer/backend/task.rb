@@ -5,7 +5,8 @@
 # Copyright (C) 2012 by TADA Tadashi <t@tdtds.jp>
 # Distributed under GPL.
 #
-require 'yaml'
+require 'kindlegen'
+require 'mail'
 
 module Kindlizer::Backend
 	class Task

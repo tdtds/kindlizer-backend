@@ -6,6 +6,9 @@
 # Distributed under GPL.
 #
 require 'yaml'
+require 'uri'
+require 'open-uri'
+require 'pathname'
 
 module Kindlizer::Backend
 	class Config
