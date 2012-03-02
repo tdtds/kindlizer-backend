@@ -12,7 +12,7 @@ require 'kindlizer/backend'
 
 module Kindlizer::Backend
 	def self.exec_task( conf )
-		now = Time::now
+		now = Time::now.utc
 		p "Staring action on #{now}."
 
 		# relaoding config
@@ -24,7 +24,10 @@ module Kindlizer::Backend
 		end
 
 		# executing tasks
-		conf.task( now.hour ).each do |task|
+		s = conf[:tz]
+		hour = (now + ((s[1,2].to_i*60 + s[3,2].to_i)*60 * (s[0]+'1').to_i)).hour
+ 		conf.task( hour ).each do |task|
+			p "starting #{task}"
 			Task::new( task ).run( conf[:mailto], conf[:mailfrom] )
 		end
 	end
