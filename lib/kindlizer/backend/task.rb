@@ -12,7 +12,7 @@ module Kindlizer::Backend
 	class Task
 		def initialize( name )
 			require "kindlizer/generator/#{name}"
-			@generator = Kindlizer::Generator.const_get( name.capitalize.gsub( /-(.)/ ){|s|$1.capitalize} )
+			@generator = Kindlizer::Generator.const_get( name.split(/-/).map{|a| a.capitalize}.join )
 		end
 
 		def run( to, from )
