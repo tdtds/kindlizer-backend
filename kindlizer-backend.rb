@@ -12,9 +12,6 @@ require 'kindlizer/backend'
 
 module Kindlizer::Backend
 	def self.exec_task( conf )
-		now = Time::now.localtime( conf[:tz] )
-		$logger.info "Staring action on #{now}."
-
 		# relaoding config
 		begin
 			conf_new = Config::new( ENV['KINDLIZER_CONFIG'] )
@@ -24,6 +21,8 @@ module Kindlizer::Backend
 		end
 
 		# executing tasks
+		now = Time::now.localtime( conf[:tz] )
+		$logger.info "Staring action on #{now}."
 		conf.task( now.hour ).each do |task|
 			$logger.info "starting #{task}"
 			Task::new( task ).run( conf[:mailto], conf[:mailfrom], now )
