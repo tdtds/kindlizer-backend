@@ -7,6 +7,10 @@
 #
 module Kindlizer
 	module Backend
+		require 'logger'
+		$logger = Logger::new( STDOUT )
+		$logger.level = Logger::INFO
+
 		require 'kindlizer/backend/config'
 		require 'kindlizer/backend/task'
 	end

@@ -21,10 +21,11 @@ module Kindlizer::Backend
 					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
-						p "generated #{mobi} successfully."
+						$logger.info "generated #{mobi} successfully."
 						deliver( to, from, mobi )
+						$logger.info "sent mail successfully."
 					else
-						p 'failed mobi generation.'
+						$logger.error 'failed mobi generation.'
 					end
 				end
 			end

@@ -13,19 +13,19 @@ require 'kindlizer/backend'
 module Kindlizer::Backend
 	def self.exec_task( conf )
 		now = Time::now.localtime( conf[:tz] )
-		p "Staring action on #{now}."
+		$logger.info "Staring action on #{now}."
 
 		# relaoding config
 		begin
 			conf_new = Config::new( ENV['KINDLIZER_CONFIG'] )
 			conf.replace( conf_new )
 		rescue
-			p 'failed config reloading, then using previous settings.'
+			$logger.warn 'failed config reloading, then using previous settings.'
 		end
 
 		# executing tasks
 		conf.task( now.hour ).each do |task|
-			p "starting #{task}"
+			$logger.info "starting #{task}"
 			Task::new( task ).run( conf[:mailto], conf[:mailfrom], now )
 		end
 	end

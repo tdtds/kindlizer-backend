@@ -3,6 +3,10 @@
 $: << './lib'
 require 'kindlizer/backend'
 require 'kindlegen'
+require 'logger'
+
+$logger = Logger::new( STDOUT )
+$logger.level = Logger::INFO
 
 ARGV.each do |task|
 	require "kindlizer/generator/#{task}"
