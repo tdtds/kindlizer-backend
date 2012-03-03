@@ -21,6 +21,8 @@ module Kindlizer
 
 				@dst_dir = @current_dir + '/dst'
 				Dir::mkdir( @dst_dir )
+				FileUtils.cp( "./resource/nikkei.jpg", @dst_dir )
+				FileUtils.cp( "./resource/nikkei.css", @dst_dir )
 			end
 
 			def generate
