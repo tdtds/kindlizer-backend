@@ -1,7 +1,7 @@
 ---
 :mailto: exsample@free.kindle.com
 :mailfrom: hoge@example.com
-:tz: +09:00
+:tz: "+09:00"
 :task:
   4:
   - nikkei-free
