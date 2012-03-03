@@ -28,7 +28,7 @@ module Kindlizer
 				FileUtils.cp( "./resource/internet-watch.css", @dst_dir )
 			end
 
-			def generate
+			def generate( now )
 				items = []
 				
 				rdf_file = "#{TOP}/cda/rss/internet.rdf"
@@ -45,7 +45,6 @@ module Kindlizer
 					items <<  OpenStruct::new( :uri => uri, :title => title )
 				end
 				
-				now = Time::now
 				now_str = now.strftime( '%Y-%m-%d %H:%M' )
 				
 				#
