@@ -12,23 +12,20 @@ require 'kindlizer/backend'
 
 module Kindlizer::Backend
 	def self.exec_task( conf )
-		now = Time::now.utc
-		p "Staring action on #{now}."
-
 		# relaoding config
 		begin
 			conf_new = Config::new( ENV['KINDLIZER_CONFIG'] )
 			conf.replace( conf_new )
 		rescue
-			p 'failed config reloading, then using previous settings.'
+			$logger.warn 'failed config reloading, then using previous settings.'
 		end
 
 		# executing tasks
-		s = conf[:tz]
-		hour = (now + ((s[1,2].to_i*60 + s[3,2].to_i)*60 * (s[0]+'1').to_i)).hour
- 		conf.task( hour ).each do |task|
-			p "starting #{task}"
-			Task::new( task ).run( conf[:mailto], conf[:mailfrom] )
+		now = Time::now.localtime( conf[:tz] )
+		$logger.info "Staring action on #{now}."
+		conf.task( now.hour ).each do |task|
+			$logger.info "starting #{task}"
+			Task::new( task ).run( conf[:mailto], conf[:mailfrom], now )
 		end
 	end
 
@@ -41,8 +38,8 @@ module Kindlizer::Backend
 	if ENV['RACK_ENV'] == 'production'
 		Mail.defaults do # using sendgrid plugin
 			delivery_method :smtp, {
-				:address => 'smtp-a.css.fujitsu.com',
-				:port => '25',
+				:address => 'smtp.sendgrid.net',
+				:port => '587',
 				:domain => 'heroku.com',
 				:user_name => ENV['SENDGRID_USERNAME'],
 				:password => ENV['SENDGRID_PASSWORD'],

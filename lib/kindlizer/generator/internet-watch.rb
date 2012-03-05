@@ -9,6 +9,7 @@ require 'uri'
 require 'ostruct'
 require 'tmpdir'
 require 'pathname'
+require 'fileutils'
 
 module Kindlizer
 	module Generator
@@ -23,9 +24,11 @@ module Kindlizer
 
 				@dst_dir = @current_dir + '/dst'
 				Dir::mkdir( @dst_dir )
+				FileUtils.cp( "./resource/internet-watch.jpg", @dst_dir )
+				FileUtils.cp( "./resource/internet-watch.css", @dst_dir )
 			end
 
-			def generate
+			def generate( now )
 				items = []
 				
 				rdf_file = "#{TOP}/cda/rss/internet.rdf"
@@ -42,7 +45,6 @@ module Kindlizer
 					items <<  OpenStruct::new( :uri => uri, :title => title )
 				end
 				
-				now = Time::now
 				now_str = now.strftime( '%Y-%m-%d %H:%M' )
 				
 				#
@@ -129,7 +131,7 @@ module Kindlizer
 							</dc-metadata>
 							<x-metadata>
 								<output encoding="utf-8" content-type="text/x-oeb1-document"></output>
-								<EmbeddedCover>cover.gif</EmbeddedCover>
+								<EmbeddedCover>internet-watch.jpg</EmbeddedCover>
 							</x-metadata>
 						</metadata>
 						<manifest>

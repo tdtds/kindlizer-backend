@@ -15,16 +15,17 @@ module Kindlizer::Backend
 			@generator = Kindlizer::Generator.const_get( name.split(/-/).map{|a| a.capitalize}.join )
 		end
 
-		def run( to, from )
+		def run( to, from, now )
 			Dir.mktmpdir do |dir|
-				@generator::new( dir ).generate do |opf|
+				@generator::new( dir ).generate( now ) do |opf|
 					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
-						p "generated #{mobi} successfully."
+						$logger.info "generated #{mobi} successfully."
 						deliver( to, from, mobi )
+						$logger.info "sent mail successfully."
 					else
-						p 'failed mobi generation.'
+						$logger.error 'failed mobi generation.'
 					end
 				end
 			end
