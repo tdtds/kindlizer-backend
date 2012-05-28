@@ -254,7 +254,7 @@ module Kindlizer
 			end
 			
 			def uri2aid( uri )
-				uri.scan( /g=([^;$]+)/ ).flatten[0]
+				uri.scan( %r|/article/([^/]*)/| ).flatten[0]
 			end
 			
 			def generate_contents( toc )
