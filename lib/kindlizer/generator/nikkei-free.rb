@@ -185,7 +185,7 @@ module Kindlizer
 				<?xml version="1.0" encoding="UTF-8"?>
 				<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
 				<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
-				<docTitle><text>日経電子版 (#{@now_str})</text></docTitle>
+				<docTitle><text>日経電子版[Free] (#{@now_str})</text></docTitle>
 				<navMap>
 					<navPoint id="toc" playOrder="0"><navLabel><text>Table of Contents</text></navLabel><content src="toc.html" /></navPoint>
 				XML
@@ -209,10 +209,10 @@ module Kindlizer
 				<package unique-identifier="uid">
 					<metadata>
 						<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
-							<dc:Title>日経電子版 (#{@now_str})</dc:Title>
+							<dc:Title>日経電子版[Free] (#{@now_str})</dc:Title>
 							<dc:Language>en-US</dc:Language>
 							<dc:Creator>日本経済新聞社</dc:Creator>
-							<dc:Description>日経電子版、#{@now_str}生成</dc:Description>
+							<dc:Description>日経電子版[Free]、#{@now_str}生成</dc:Description>
 							<dc:Date>#{@now.strftime( '%d/%m/%Y' )}</dc:Date>
 						</dc-metadata>
 						<x-metadata>
