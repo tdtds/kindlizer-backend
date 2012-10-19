@@ -202,7 +202,7 @@ module Kindlizer
 					end
 					open( cache, 'w' ){|f| f.write html }
 				end
-				Nokogiri( html.encode 'UTF-8' )
+				Nokogiri( html.encode 'UTF-8', invalid: :replace, undef: :replace, replace: '?' )
 			end
 			
 			def html_header( title )
