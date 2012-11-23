@@ -136,7 +136,7 @@ module Kindlizer
 						</metadata>
 						<manifest>
 							<item id="toc" media-type="application/x-dtbncx+xml" href="toc.ncx"></item>
-							<item id="style" media-type="text/css" href="style.css"></item>
+							<item id="style" media-type="text/css" href="internet-watch.css"></item>
 							<item id="index" media-type="text/html" href="toc.html"></item>
 					XML
 				
@@ -212,7 +212,7 @@ module Kindlizer
 				<head>
 					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
 					<title>#{title}</title>
-					<link rel="stylesheet" href="style.css" type="text/css" media="all"></link>
+					<link rel="stylesheet" href="internet-watch.css" type="text/css" media="all"></link>
 				</head>
 				<body>
 					<h1>#{title}</h1>
