@@ -3,7 +3,7 @@ source :rubygems
 gem 'clockwork'
 gem 'kindlegen'
 gem 'systemu'
-gem 'mail'
+gem 'mail', '2.4.4'
 gem 'mechanize'
 gem 'nokogiri'
 
