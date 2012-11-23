@@ -124,7 +124,7 @@ module Kindlizer
 						<metadata>
 							<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
 								<dc:Title>INTERNET Watch (#{now_str})</dc:Title>
-								<dc:Language>en-US</dc:Language>
+								<dc:Language>ja-JP</dc:Language>
 								<dc:Creator>インプレス</dc:Creator>
 								<dc:Description>INTERNET Watch、#{now_str}生成</dc:Description>
 								<dc:Date>#{now.strftime( '%d/%m/%Y' )}</dc:Date>
