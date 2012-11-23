@@ -18,7 +18,7 @@ module Kindlizer::Backend
 		def run( to, from, now )
 			Dir.mktmpdir do |dir|
 				@generator::new( dir ).generate( now ) do |opf|
-					Kindlegen.run( opf, '-o', 'kindlizer.mobi' )
+					Kindlegen.run( opf, '-o', 'kindlizer.mobi', '-locale', 'ja' )
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
 						$logger.info "generated #{mobi} successfully."
