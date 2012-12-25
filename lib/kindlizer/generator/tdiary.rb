@@ -6,10 +6,6 @@
 require 'nokogiri'
 require 'open-uri'
 require 'uri'
-require 'ostruct'
-require 'tmpdir'
-require 'pathname'
-require 'fileutils'
 
 module Kindlizer
 	module Generator
