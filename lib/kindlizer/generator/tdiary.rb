@@ -28,8 +28,8 @@ module Kindlizer
 				#
 				# generating html
 				#
-				(html / 'div.adminmenu').remove
-				(html / 'div.sidebar').remove
+				html.css('head meta', 'head link', 'head style', 'script').remove
+				html.css('div.adminmenu', 'div.sidebar', 'div.footer').remove
 				(html / 'img').each do |img|
 					file_name = save_image(img['src'])
 					img['src'] = file_name
