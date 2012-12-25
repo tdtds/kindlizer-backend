@@ -44,7 +44,7 @@ module Kindlizer
 					<?xml version="1.0" encoding="UTF-8"?>
 					<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
 					<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
-					<docTitle><text>tDiary (#{now_str})</text></docTitle>
+					<docTitle><text>#{title}</text></docTitle>
 					<navMap>
 						<navPoint id="index" playOrder="1">
 							<navLabel>
@@ -66,7 +66,7 @@ module Kindlizer
 					<package unique-identifier="uid">
 						<metadata>
 							<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
-								<dc:Title>tDiary (#{now_str})</dc:Title>
+								<dc:Title>#{title}</dc:Title>
 								<dc:Language>ja-JP</dc:Language>
 								<dc:Creator>#{author}</dc:Creator>
 								<dc:Description>tDiary N-Year Diary</dc:Description>
