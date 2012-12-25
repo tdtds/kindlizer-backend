@@ -21,6 +21,8 @@ module Kindlizer
 				html = retry_loop( 5 ) do
 					Nokogiri(open("#{TOP}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
 				end
+				title = (html / 'head title').text
+				author = (html / 'head meta[name="author"]')[0]['content']
 				now_str = now.strftime( '%m-%d' )
 
 				#
@@ -46,7 +48,7 @@ module Kindlizer
 					<navMap>
 						<navPoint id="index" playOrder="1">
 							<navLabel>
-								<text>#{'title'}</text>
+								<text>#{title}</text>
 							</navLabel>
 							<content src="index.html" />
 						</navPoint>
@@ -66,7 +68,7 @@ module Kindlizer
 							<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
 								<dc:Title>tDiary (#{now_str})</dc:Title>
 								<dc:Language>ja-JP</dc:Language>
-								<dc:Creator>#{"author"}</dc:Creator>
+								<dc:Creator>#{author}</dc:Creator>
 								<dc:Description>tDiary N-Year Diary</dc:Description>
 								<dc:Date>#{now.strftime( '%d/%m/%Y' )}</dc:Date>
 							</dc-metadata>
