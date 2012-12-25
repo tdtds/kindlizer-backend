@@ -14,13 +14,7 @@ module Kindlizer
 			
 			def initialize( tmpdir )
 				@current_dir = tmpdir
-
-				@src_dir = @current_dir + '/src'
-				Dir::mkdir( @src_dir )
-
-				@dst_dir = @current_dir + '/dst'
-				Dir::mkdir( @dst_dir )
-				FileUtils.cp( "./resource/tdiary.css", @dst_dir )
+				FileUtils.cp( "./resource/tdiary.css", @current_dir )
 			end
 
 			def generate( now )
@@ -38,12 +32,12 @@ module Kindlizer
 					file_name = save_image(img['src'])
 					img['src'] = file_name
 				end
-				open( "#{@dst_dir}/index.html", 'w' ){|f| f.write html.to_html}
+				open( "#{@current_dir}/index.html", 'w' ){|f| f.write html.to_html}
 
 				#
 				# generating TOC in ncx
 				#
-				open( "#{@dst_dir}/toc.ncx", 'w:utf-8' ) do |f|
+				open( "#{@current_dir}/toc.ncx", 'w:utf-8' ) do |f|
 					f.write <<-XML.gsub( /^\t/, '' )
 					<?xml version="1.0" encoding="UTF-8"?>
 					<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
@@ -64,7 +58,7 @@ module Kindlizer
 				#
 				# generating OPF
 				#
-				open( "#{@dst_dir}/tdiary.opf", 'w:utf-8' ) do |f|
+				open( "#{@current_dir}/tdiary.opf", 'w:utf-8' ) do |f|
 					f.write <<-XML.gsub( /^\t/, '' )
 					<?xml version="1.0" encoding="utf-8"?>
 					<package unique-identifier="uid">
@@ -93,7 +87,7 @@ module Kindlizer
 					XML
 				end
 
-				yield "#{@dst_dir}/tdiary.opf"
+				yield "#{@current_dir}/tdiary.opf"
 			end
 
 		private
@@ -119,7 +113,7 @@ module Kindlizer
 				img = TOP + img if /^https?:/ !~ img
 				uri = URI(img)
 				file_name = uri.path.gsub(%r|[/%]|, '_')
-				open("#{@dst_dir}/#{file_name}", 'w') do |f|
+				open("#{@current_dir}/#{file_name}", 'w') do |f|
 					f.write open(uri, &:read)
 				end
 				return file_name
