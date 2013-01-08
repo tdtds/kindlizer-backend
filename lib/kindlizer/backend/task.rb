@@ -23,7 +23,6 @@ module Kindlizer::Backend
 					if mobi.file?
 						$logger.info "generated #{mobi} successfully."
 						deliver( to, from, mobi )
-						$logger.info "sent mail successfully."
 					else
 						$logger.error 'failed mobi generation.'
 					end
@@ -31,7 +30,16 @@ module Kindlizer::Backend
 			end
 		end
 
+	private
 		def deliver( to_address, from_address, mobi )
+			if to_address =~ /^dropbox:/
+				deliver_via_dropbox(to_address.sub(/^dropbox:/, ''), mobi)
+			else
+				deliver_via_mail(to_address, from_address, mobi)
+			end
+		end
+
+		def deliver_via_mail(to_address, from_address, mobi)
 			Mail.deliver do
 				from from_address
 				to  to_address
@@ -42,6 +50,21 @@ module Kindlizer::Backend
 					:content => open(mobi, &:read)
 				}
 			end
+			$logger.info "sent mail successfully."
+		end
+
+		def deliver_via_dropbox(to_address, mobi)
+			require 'dropbox_sdk'
+
+			session = DropboxSession.new(ENV['DROPBOX_APP_KEY'], ENV['DROPBOX_APP_SECRET'])
+			session.set_request_token(ENV['DROPBOX_REQUEST_TOKEN_KEY'], ENV['DROPBOX_REQUEST_TOKEN_SECRET'])
+			session.set_access_token(ENV['DROPBOX_ACCESS_TOKEN_KEY'], ENV['DROPBOX_ACCESS_TOKEN_SECRET'])
+			client = DropboxClient.new(session, :dropbox)
+			open(mobi) do |f|
+				path = Pathname(to_address) + "#{mobi.basename('.mobi').to_s}#{Time::now.to_i}.mobi"
+				client.put_file(path.to_s, f)
+			end
+			$logger.info "saved to dropbox successfully."
 		end
 	end
 end
