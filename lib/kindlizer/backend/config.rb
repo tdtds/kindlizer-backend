@@ -6,14 +6,13 @@
 # Distributed under GPL.
 #
 require 'yaml'
-require 'uri'
 require 'open-uri'
 require 'pathname'
 
 module Kindlizer::Backend
 	class Config
 		def initialize( uri )
-			@uri = URI( uri )
+			@uri = uri
 			@conf = {}
 			load
 		end
