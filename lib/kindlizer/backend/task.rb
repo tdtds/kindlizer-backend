@@ -37,7 +37,7 @@ module Kindlizer::Backend
 				to  to_address
 				subject 'sent by kindlizer'
 				body ''
-				attachments[mobi.to_s] = {
+				attachments[mobi.basename.to_s] = {
 					:mime_type => 'application/octet-stream',
 					:content => open(mobi, &:read)
 				}
