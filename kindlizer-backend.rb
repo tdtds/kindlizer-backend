@@ -64,6 +64,6 @@ module Kindlizer::Backend
 				:enable_starttls_auto => true
 			}
 		end
-		Clockwork::every( 1.hour, conf ) ### for testing
+		Clockwork::every( 5.minutes, conf ) ### for testing
 	end
 end
