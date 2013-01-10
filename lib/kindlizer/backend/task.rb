@@ -22,7 +22,7 @@ module Kindlizer::Backend
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
 						$logger.info "generated #{mobi} successfully."
-						deliver( to, from, mobi )
+						deliver( [to].flatten, from, mobi )
 					else
 						$logger.error 'failed mobi generation.'
 					end
@@ -32,14 +32,13 @@ module Kindlizer::Backend
 
 	private
 		def deliver( to_address, from_address, mobi )
-			if to_address =~ /^dropbox:/
-				deliver_via_dropbox(to_address.sub(/^dropbox:/, ''), mobi)
-			else
-				deliver_via_mail(to_address, from_address, mobi)
-			end
+			to_dropbox = to_address.map{|a| /^dropbox:/ =~ a ? a : nil}.compact
+			deliver_via_dropbox(to_dropbox, mobi)
+			deliver_via_mail(to_address - to_dropbox, from_address, mobi)
 		end
 
 		def deliver_via_mail(to_address, from_address, mobi)
+			return if to_address.empty?
 			Mail.deliver do
 				from from_address
 				to  to_address
@@ -50,21 +49,26 @@ module Kindlizer::Backend
 					:content => open(mobi, &:read)
 				}
 			end
-			$logger.info "sent mail successfully."
+			$logger.info "sent mails successfully."
 		end
 
 		def deliver_via_dropbox(to_address, mobi)
+			return if to_address.empty?
+
 			require 'dropbox_sdk'
 
 			session = DropboxSession.new(ENV['DROPBOX_APP_KEY'], ENV['DROPBOX_APP_SECRET'])
 			session.set_request_token(ENV['DROPBOX_REQUEST_TOKEN_KEY'], ENV['DROPBOX_REQUEST_TOKEN_SECRET'])
 			session.set_access_token(ENV['DROPBOX_ACCESS_TOKEN_KEY'], ENV['DROPBOX_ACCESS_TOKEN_SECRET'])
 			client = DropboxClient.new(session, :dropbox)
-			open(mobi) do |f|
-				path = Pathname(to_address) + "#{mobi.basename('.mobi').to_s}#{Time::now.to_i}.mobi"
-				client.put_file(path.to_s, f)
+			to_address.each do |address|
+				to_path = address.sub(/^dropbox:/, '')
+				open(mobi) do |f|
+					file = Pathname(to_path) + "#{mobi.basename('.mobi').to_s}#{Time::now.to_i}.mobi"
+					client.put_file(file.to_s, f)
+				end
+				$logger.info "saved to #{address} successfully."
 			end
-			$logger.info "saved to dropbox successfully."
 		end
 	end
 end
