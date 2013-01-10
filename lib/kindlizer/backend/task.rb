@@ -74,5 +74,6 @@ module Kindlizer::Backend
 				$logger.error "failed while saving to dropbox."
 				$logger.error "#{$@}: #{$!}"
 			end
+		end
 	end
 end
