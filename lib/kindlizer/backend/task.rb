@@ -55,20 +55,24 @@ module Kindlizer::Backend
 		def deliver_via_dropbox(to_address, mobi)
 			return if to_address.empty?
 
-			require 'dropbox_sdk'
-
-			session = DropboxSession.new(ENV['DROPBOX_APP_KEY'], ENV['DROPBOX_APP_SECRET'])
-			session.set_request_token(ENV['DROPBOX_REQUEST_TOKEN_KEY'], ENV['DROPBOX_REQUEST_TOKEN_SECRET'])
-			session.set_access_token(ENV['DROPBOX_ACCESS_TOKEN_KEY'], ENV['DROPBOX_ACCESS_TOKEN_SECRET'])
-			client = DropboxClient.new(session, :dropbox)
-			to_address.each do |address|
-				to_path = address.sub(/^dropbox:/, '')
-				open(mobi) do |f|
-					file = Pathname(to_path) + "#{mobi.basename('.mobi').to_s}#{Time::now.to_i}.mobi"
-					client.put_file(file.to_s, f)
+			begin
+				require 'dropbox_sdk'
+	
+				session = DropboxSession.new(ENV['DROPBOX_APP_KEY'], ENV['DROPBOX_APP_SECRET'])
+				session.set_request_token(ENV['DROPBOX_REQUEST_TOKEN_KEY'], ENV['DROPBOX_REQUEST_TOKEN_SECRET'])
+				session.set_access_token(ENV['DROPBOX_ACCESS_TOKEN_KEY'], ENV['DROPBOX_ACCESS_TOKEN_SECRET'])
+				client = DropboxClient.new(session, :dropbox)
+				to_address.each do |address|
+					to_path = address.sub(/^dropbox:/, '')
+					open(mobi) do |f|
+						file = Pathname(to_path) + "#{mobi.basename('.mobi').to_s}#{Time::now.to_i}.mobi"
+						client.put_file(file.to_s, f)
+					end
+					$logger.info "saved to #{address} successfully."
 				end
-				$logger.info "saved to #{address} successfully."
+			rescue
+				$logger.error "failed while saving to dropbox."
+				$logger.error "#{$@}: #{$!}"
 			end
-		end
 	end
 end
