@@ -36,7 +36,7 @@ module Kindlizer
 					Nokogiri( open( rdf_file, 'r:utf-8', &:read ) )
 				end
 				(rdf / 'item' ).each do |item|
-					uri = URI( item.attr( 'about' ) )
+					uri = URI( item.attr( 'about' ).to_s )
 					next unless /internet\.watch\.impress\.co\.jp/ =~ uri.host
 					uri.query = nil # remove query of 'from rss'
 				
