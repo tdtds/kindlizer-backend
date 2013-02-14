@@ -41,8 +41,8 @@ module Kindlizer
 					uri.query = nil # remove query of 'ref=rss'
 				
 					title = (item / 'title').text
-				
-					items <<  OpenStruct::new( :uri => uri, :title => title )
+					date = item.elements.map{|e| e.text if e.name == 'date'}.join
+					items <<  OpenStruct::new( :uri => uri, :title => title, :date => date )
 				end
 				
 				now_str = now.strftime( '%Y-%m-%d %H:%M' )
@@ -50,7 +50,7 @@ module Kindlizer
 				#
 				# generating articles in html
 				#
-				items.each do |item|
+				items.sort{|a,b| a.date <=> b.date}.each do |item|
 					begin
 						article = get_article( item.uri )
 						open( "#{@dst_dir}/#{item_id item.uri}.html", 'w' ) do |f|
