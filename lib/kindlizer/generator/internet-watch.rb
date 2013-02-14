@@ -44,13 +44,14 @@ module Kindlizer
 					date = item.elements.map{|e| e.text if e.name == 'date'}.join
 					items <<  OpenStruct::new( :uri => uri, :title => title, :date => date )
 				end
+				items.sort!{|a,b| a.date <=> b.date}
 				
 				now_str = now.strftime( '%Y-%m-%d %H:%M' )
 				
 				#
 				# generating articles in html
 				#
-				items.sort{|a,b| a.date <=> b.date}.each do |item|
+				items.each do |item|
 					begin
 						article = get_article( item.uri )
 						open( "#{@dst_dir}/#{item_id item.uri}.html", 'w' ) do |f|
