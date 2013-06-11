@@ -115,8 +115,12 @@ module Kindlizer
 				img = TOP + img if /^https?:/ !~ img
 				uri = URI(img)
 				file_name = uri.path.gsub(%r|[/%]|, '_')
-				open("#{@current_dir}/#{file_name}", 'w') do |f|
-					f.write open(uri, &:read)
+				begin
+					open("#{@current_dir}/#{file_name}", 'w') do |f|
+						f.write open(uri, &:read)
+					end
+				rescue OpenURI::HTTPError
+					$stderr.puts "#$!: #{uri}"
 				end
 				return file_name
 			end
