@@ -1,0 +1,19 @@
+
+* {
+	margin: 0px;
+	padding: 0px;
+	text-indent: 0px;
+}
+
+h1 {
+	font-size: 150%;
+	font-weight: bold;
+}
+
+p {
+	text-indent: 0em;
+	margin: 1em 0em 0em 0em;
+	line-height: 150%;
+}
+
+
