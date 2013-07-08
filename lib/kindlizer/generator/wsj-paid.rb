@@ -101,8 +101,8 @@ module Kindlizer
 					end
 
 					count = 0
-					newsLinks = (agent.page / "div.whatsNews ul.newsItem h2 a")
-					newsLinks = (agent.page / "div.headlineSummary ul.newsItem h2 a" ) if(newsLinks.size == 0)
+					(agent.page / "div.leadModule" ).remove
+					newsLinks = (agent.page / "div.headlineSummary ul.newsItem h2 a" )
 					newsLinks.each do |a|
 						if(a.attr('href') =~ /^http:\/\/jp.wsj.com\/article\//)
 							toc_cat << [canonical( a.text.strip ), a.attr( 'href' )]
