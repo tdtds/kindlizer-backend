@@ -225,7 +225,9 @@ module Kindlizer
 				html = get_html_item( agent, uri )
 
 				open( "#{@dst_dir}/#{aid}.html", 'w:utf-8' ) do |f|
-					f.puts canonical( html_header( (html / 'meta[@property="og:title"]')[0].attr("content").strip ) )
+					title_tag = (html / 'meta[@property="og:title"]')
+					title = title_tag.size > 0 ? title_tag[0].attr("content").strip : item
+					f.puts canonical( html_header( title ) )
 
 					f.puts scrape_html_item(html)
 					f.puts html_footer
