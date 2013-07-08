@@ -15,6 +15,7 @@ module Kindlizer
 				@now = now
 				@now_str = now.strftime '%Y-%m-%d %H:%M'
 				@title = "WSJ U.S."
+				@lang = "en-US"
 				FileUtils.cp( "./resource/wsj-us.jpg", @dst_dir + "/wsj.jpg")
 
 				agent = Mechanize::new

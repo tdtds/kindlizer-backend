@@ -45,6 +45,7 @@ module Kindlizer
 				@now = now
 				@now_str = now.strftime '%Y-%m-%d %H:%M'
 				@title = "WSJ日本版"
+				@lang = "ja-JP"
 
 				agent = Mechanize::new
 				agent.set_proxy( *ENV['HTTP_PROXY'].split( /:/ ) ) if ENV['HTTP_PROXY']
@@ -270,7 +271,7 @@ module Kindlizer
 					<metadata>
 						<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
 							<dc:Title>#{@title} (#{@now_str})</dc:Title>
-							<dc:Language>ja-JP</dc:Language>
+							<dc:Language>#{@lang}</dc:Language>
 							<dc:Creator>The Wall Street Journal Online</dc:Creator>
 							<dc:Description>#{@title}、#{@now_str}生成</dc:Description>
 							<dc:Date>#{@now.strftime( '%d/%m/%Y' )}</dc:Date>
