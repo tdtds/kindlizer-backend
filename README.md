@@ -43,7 +43,7 @@ config.yamlというファイルがあるので、適当な名前でコピーし
 % heroku addons:add sendgrid:starter
 % heroku config:add KINDLIZER_CONFIG=[YOUR YAML URI] RACK_ENV=production
 % git push heroku
-% git ps:scale web=0 clock=1
+% heroku ps:scale web=0 clock=1
 ```
 
 これで動くはず。ログをみて、動作状況を確認しましょう::
