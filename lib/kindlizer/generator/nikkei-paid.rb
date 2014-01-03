@@ -1,6 +1,6 @@
 # -*- coding: utf-8; -*-
 #
-# scraping nikkei.com for Kindlizer
+# scraping nikkei.com (for paid user) for Kindlizer
 #
 
 require 'mechanize'
@@ -16,19 +16,7 @@ module Kindlizer
 			LOGIN = "#{TOP}/etc/accounts/login?dps=3&amp;pageflag=top&amp;url=http%3A%2F%2Fwww.nikkei.com%2F"
 
 			def initialize( tmpdir )
-				begin
-					require 'pit'
-					login = Pit::get( 'nikkei', :require => {
-						'user' => 'your ID of Nikkei.',
-						'pass' => 'your Password of Nikkei.',
-					} )
-					@nikkei_id = login['user']
-					@nikkei_pw = login['pass']
-				rescue LoadError # no pit library, using environment variables
-					@nikkei_id = ENV['NIKKEI_ID']
-					@nikkei_pw = ENV['NIKKEI_PW']
-				end
-
+				@nikkei_id, @nikkei_pw = auth
 				@current_dir = tmpdir
 
 				@src_dir = @current_dir + '/src'
@@ -38,6 +26,23 @@ module Kindlizer
 				Dir::mkdir( @dst_dir )
 				FileUtils.cp( "./resource/nikkei.jpg", @dst_dir )
 				FileUtils.cp( "./resource/nikkei.css", @dst_dir )
+			end
+
+			def auth
+				id, pw = nil, nil
+				begin
+					require 'pit'
+					login = Pit::get( 'nikkei', :require => {
+						'user' => 'your ID of Nikkei.',
+						'pass' => 'your Password of Nikkei.',
+					} )
+					id = login['user']
+					pw = login['pass']
+				rescue LoadError # no pit library, using environment variables
+					id = ENV['NIKKEI_ID']
+					pw = ENV['NIKKEI_PW']
+				end
+				return id, pw
 			end
 
 			def generate( now )
