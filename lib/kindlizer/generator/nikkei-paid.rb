@@ -157,27 +157,34 @@ module Kindlizer
 			def scrape_html_item( html )
 				result = ''
 				(html / 'div.cmn-article_text').each do |div|
-					(div / 'div.cmn-photo_style2 img').each do |image_tag|
-						image_url = image_tag.attr( 'src' )
-						next if /^http/ =~ image_url
-						image_file = File::basename( image_url )
-						#puts "   getting image #{image_file}"
-						begin
-							image = open( "#{TOP}#{image_url.sub /PN/, 'PB'}", &:read )
-							open( "#{@dst_dir}/#{image_file}", 'w' ){|fp| fp.write image}
-							result << %Q|\t<p><img src="#{image_file}"></p>|
-						rescue
-							$stderr.puts "FAIL TO DOWNLOAD IMAGE: #{image_url}"
+					div.children.each do |e|
+					#div.css('div.cmn-photo_style2 img', 'p', 'table').each do |e|
+						case e.name
+						when 'p'
+							next unless (e / 'a.cmnc-continue').empty?
+							(e / 'span.JSID_urlData').remove
+							para = canonical e.text.strip.sub( /^　/, '' )
+							result << "\t<p>#{para}</p>" unless para.empty?
+						when 'table'
+							result << e.to_html
+						when 'div'
+							e.css('img').each do |img|
+								image_url = img['src']
+								next if /^http/ =~ image_url
+								image_file = File::basename( image_url )
+								begin
+									image = open( "#{TOP}#{image_url.sub /PN/, 'PB'}", &:read )
+									open( "#{@dst_dir}/#{image_file}", 'w' ){|fp| fp.write image}
+									result << %Q|\t<div>|
+									result << %Q|\t\t<img src="#{image_file}">|
+									result << %Q|\t\t<p>[#{e.text}]</p>|
+									result << %Q|\t</div>|
+								rescue
+									p $!
+									$stderr.puts "FAIL TO DOWNLOAD IMAGE: #{image_url}"
+								end
+							end
 						end
-					end
-					(div / 'p').each do |text|
-						next unless (text / 'a.cmnc-continue').empty?
-						(text / 'span.JSID_urlData').remove
-						para = canonical text.text.strip.sub( /^　/, '' )
-						result << "\t<p>#{para}</p>" unless para.empty?
-					end
-					(div / 'table').each do |table|
-						result << table.to_html
 					end
 				end
 				result
