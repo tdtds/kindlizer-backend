@@ -11,7 +11,6 @@ gem 'nokogiri'
 gem 'dropbox-sdk'
 
 group :development, :test do
-	gem 'rake'
 	gem 'rspec'
 	gem 'pit'
 end
