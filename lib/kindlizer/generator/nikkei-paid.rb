@@ -182,7 +182,7 @@ module Kindlizer
 									open( "#{@dst_dir}/#{image_file}", 'w' ){|fp| fp.write image}
 									result << %Q|\t<div>|
 									result << %Q|\t\t<img src="#{image_file}">|
-									result << %Q|\t\t<p>[#{e.text}]</p>|
+									result << %Q|\t\t<p>[#{e.text}]</p>| unless e.text.strip.empty?
 									result << %Q|\t</div>|
 								rescue
 									p $!
