@@ -28,27 +28,6 @@ module Kindlizer
 				FileUtils.cp( "./resource/nikkei.css", @dst_dir )
 			end
 
-			def auth
-				id, pw = nil, nil
-				begin
-					require 'pit'
-					login = Pit::get( 'nikkei', :require => {
-						'user' => 'your ID of Nikkei.',
-						'pass' => 'your Password of Nikkei.',
-					} )
-					id = login['user']
-					pw = login['pass']
-				rescue LoadError # no pit library, using environment variables
-					id = ENV['NIKKEI_ID']
-					pw = ENV['NIKKEI_PW']
-				end
-				return id, pw
-			end
-
-			def basename
-				self.class.to_s.sub(/.*:/, '').gsub(/([A-Z])/, '-\\1').sub(/^-/, '').downcase
-			end
-
 			def generate( now )
 				@now = now
 				@now_str = now.strftime '%Y-%m-%d %H:%M'
@@ -103,6 +82,27 @@ module Kindlizer
 			end
 
 		private
+
+			def auth
+				id, pw = nil, nil
+				begin
+					require 'pit'
+					login = Pit::get( 'nikkei', :require => {
+						'user' => 'your ID of Nikkei.',
+						'pass' => 'your Password of Nikkei.',
+					} )
+					id = login['user']
+					pw = login['pass']
+				rescue LoadError # no pit library, using environment variables
+					id = ENV['NIKKEI_ID']
+					pw = ENV['NIKKEI_PW']
+				end
+				return id, pw
+			end
+
+			def basename
+				self.class.to_s.sub(/.*:/, '').gsub(/([A-Z])/, '-\\1').sub(/^-/, '').downcase
+			end
 
 			def canonical( str )
 				str.gsub( /\uFF5E/, "\u301C" ) # for WAVE DASH problem
