@@ -20,7 +20,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.6.9)
     json (1.8.1)
-    kindlegen (2.8.0)
+    kindlegen (2.9.0)
       systemu
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -38,7 +38,7 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9)
     nokogiri (1.6.1)
