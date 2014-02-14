@@ -55,7 +55,9 @@ module Kindlizer
 				toc_top = ['TOP NEWS']
 				%w(first second third fourth).each do |category|
 					(agent.page / "div.nx-top_news_#{category} h3 a").each do |a|
-						toc_top << [canonical( a.text.strip ), a.attr( 'href' )]
+						uri = a.attr('href')
+						next if Kindlizer::Backend::DupChecker.dup?(uri)
+						toc_top << [canonical( a.text.strip ), uri]
 					end
 				end
 				toc << toc_top
@@ -69,7 +71,9 @@ module Kindlizer
 						next if /local/ =~ cat.attr( 'href' )
 						toc_cat << cat.text
 						(genre / 'li a').each do |article|
-							toc_cat << [canonical( article.text ), article.attr( 'href' )]
+							uri = article.attr('href')
+							next if Kindlizer::Backend::DupChecker.dup?(uri)
+							toc_cat << [canonical( article.text ), uri]
 						end
 					end
 					toc << toc_cat

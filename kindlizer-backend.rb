@@ -9,6 +9,7 @@ require 'mail'
 
 $: << './lib'
 require 'kindlizer/backend'
+require 'kindlizer/backend/dup_checker'
 
 module Kindlizer::Backend
 	def self.exec_task( conf )
@@ -47,6 +48,9 @@ module Kindlizer::Backend
 				:enable_starttls_auto => true
 			}
 		end
+		if ENV['MONGOLAB_URI']
+			DupChecker.setup({sessions:{default:{uri:ENV['MONGOLAB_URI']}}})
+		end
 		Clockwork::every( 1.hour, conf, :at => '*:04' )
 	else
 		require 'pit'
@@ -64,6 +68,7 @@ module Kindlizer::Backend
 				:enable_starttls_auto => true
 			}
 		end
+		DupChecker.setup({sessions:{default:{uri:'mongodb://localhost:27017/kindlizer-backend'}}})
 		Clockwork::every( 5.minutes, conf ) ### for testing
 	end
 end

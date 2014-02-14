@@ -2,11 +2,14 @@
 # -*- coding: utf-8; -*-
 $: << './lib'
 require 'kindlizer/backend'
+require 'kindlizer/backend/dup_checker'
 require 'kindlegen'
 require 'logger'
 
 $logger = Logger::new( STDOUT )
 $logger.level = Logger::INFO
+
+Kindlizer::Backend::DupChecker.setup({sessions:{default:{uri:'mongodb://localhost:27017/kindlizer-backend'}}})
 
 ARGV.each do |task|
 	require "kindlizer/generator/#{task}"

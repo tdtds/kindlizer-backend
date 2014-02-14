@@ -39,6 +39,7 @@ module Kindlizer
 					uri = URI( item.attr( 'rdf:about' ).to_s )
 					next unless /internet\.watch\.impress\.co\.jp/ =~ uri.host
 					uri.query = nil # remove query of 'ref=rss'
+					next if Kindlizer::Backend::DupChecker.dup?(uri)
 				
 					title = (item / 'title').text
 					date = item.elements.map{|e| e.text if e.name == 'date'}.join
@@ -84,11 +85,15 @@ module Kindlizer
 				#
 				open( "#{@dst_dir}/toc.html", 'w:utf-8' ) do |f|
 					f.write html_header( 'Table of Contents' )
-					f.puts "<ul>"
-					items.each do |item|
-						f.puts %Q|\t<li><a href="#{item_id item.uri}.html">#{item.title}</a></li>|
+					if items.size == 0
+						f.puts %Q|<p>本日は記事がありません。</p>|
+					else
+						f.puts "<ul>"
+						items.each do |item|
+							f.puts %Q|\t<li><a href="#{item_id item.uri}.html">#{item.title}</a></li>|
+							end
+						f.puts "</ul>"
 					end
-					f.puts "</ul>"
 					f.write html_footer
 				end
 				
