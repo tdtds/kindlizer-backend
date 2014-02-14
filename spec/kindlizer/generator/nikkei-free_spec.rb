@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+require './lib/kindlizer/backend/dup_checker'
 require File.expand_path('../../../../lib/kindlizer/generator/nikkei-free', __FILE__ )
 
 describe 'nikkei-free generator' do

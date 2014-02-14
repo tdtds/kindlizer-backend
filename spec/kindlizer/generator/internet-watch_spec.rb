@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+require './lib/kindlizer/backend/dup_checker'
 require File.expand_path('../../../../lib/kindlizer/generator/internet-watch', __FILE__ )
 
 describe 'internet-watch generator' do
