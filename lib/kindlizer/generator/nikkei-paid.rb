@@ -69,7 +69,6 @@ module Kindlizer
 					toc_cat = []
 					(genre / 'h4.cmnc-genre_title a.cmnc-title_text').each do |cat|
 						next if /local/ =~ cat.attr( 'href' )
-						p cat.text
 						toc_cat << cat.text
 						(genre / 'li a').each do |article|
 							uri = article.attr('href')
