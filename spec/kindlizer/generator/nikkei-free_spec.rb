@@ -8,7 +8,7 @@ describe 'nikkei-free generator' do
 		it 'makes OPF file' do
 			Dir.mktmpdir do |dir|
 				Kindlizer::Generator::NikkeiFree::new( dir ).generate( Time::now ) do |opf|
-					opf.should eq "#{dir}/dst/nikkei-free.opf"
+					expect(opf).to eq "#{dir}/dst/nikkei-free.opf"
 				end
 			end
 		end

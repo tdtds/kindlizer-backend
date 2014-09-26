@@ -10,7 +10,7 @@ describe 'tdiary generator' do
 		it 'makes OPF file' do
 			Dir.mktmpdir do |dir|
 				Kindlizer::Generator::Tdiary::new( dir ).generate( Time::now ) do |opf|
-					opf.should eq "#{dir}/tdiary.opf"
+					expect(opf).to eq "#{dir}/tdiary.opf"
 				end
 			end
 		end
