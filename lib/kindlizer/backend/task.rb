@@ -15,9 +15,9 @@ module Kindlizer::Backend
 			@generator = Kindlizer::Generator.const_get( name.split(/-/).map{|a| a.capitalize}.join )
 		end
 
-		def run( to, from, now )
+		def run( to, from, opts )
 			Dir.mktmpdir do |dir|
-				@generator::new( dir ).generate( now ) do |opf|
+				@generator::new( dir ).generate( opts ) do |opf|
 					Kindlegen.run( opf, '-o', 'kindlizer.mobi', '-locale', 'ja' )
 					mobi = Pathname( opf ).dirname + 'kindlizer.mobi'
 					if mobi.file?
@@ -72,7 +72,8 @@ module Kindlizer::Backend
 				end
 			rescue
 				$logger.error "failed while saving to dropbox."
-				$logger.error "#{$@}: #{$!}"
+				$logger.error $!
+				$@.each{|l| $logger.error l}
 			end
 		end
 	end

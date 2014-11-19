@@ -8,18 +8,30 @@ Heroku上で稼働することを前提に作られたサーバアプリケー�
 
 実際にどのサイトをmobiファイル化するのかというタイミングは、環境変数'KINDLIZER_CONFIG'を使って外部から与えます。指定したURIにはyamlファイルを設置しておきます。なお、このyamlファイルは毎時起動するタイミングで読み込まれるので、ファイルを書き換えるだけで次回の実行時に変更が反映されます。
 
-yamlファイルで指定された時刻になると、そこに指示されたサイトのスクレイピングが走ります。例えば朝4時にはサイトhogeとfoo、夕方18時にはhogeのみという指定はこのようになるでしょう:
+yamlファイルで指定された時刻になると、そこに指示されたサイト群のスクレイピングが走ります。例えば朝4時にはサイト群1(fooとbar)とサイト群2(buz)、夕方18時にはサイト群2のみという指定はこのようになるでしょう:
 
 ```yaml
-:task:
+:tasks:
+  sites1:
+    :media:
+    - foo
+    - bar
+    :receiver:
+    - receiver1@example.com
+  sites2:
+    :media:
+    - buz
+    :receiver:
+    - dropbox:/Public
+:schedule:
   4:
-  - hoge
-  - foo
+  - sites1
+  - sites2
   18:
-  - hoge
+  - sites2
 ```
 
-mobiファイルの生成に成功すると、指定したアドレスにメールで送ります。実際は〜@free.kindle.comになるでしょう(:to)。また、送信元のアドレスもKindle Personal Documentで許可したアドレスを指定して置く必要があります(:from)。
+mobiファイルの生成に成功すると、指定したアドレスにメールを送ったり、Dropboxの指定フォルダに保存します。実際は〜@kindle.comになるでしょう(:receiver)。また、送信元のアドレスもKindle Personal Documentで許可したアドレスを指定して置く必要があります(:sender)。
 
 また、稼動しているサーバのTimezoneに依存しないようにするため、設定ファイルではTimezoneも指定します(:tz)。これらの指定方法はconfig.yamlを参考にしてください。
 

@@ -11,8 +11,8 @@ module Kindlizer
 			TOP = 'http://online.wsj.com'
 			LOGIN = "https://id.wsj.com/access/pages/wsj/us/login_standalone.html"
 
-			def generate( now )
-				@now = now
+			def generate(opts)
+				@now = opts[:now]
 				@now_str = now.strftime '%Y-%m-%d %H:%M'
 				@title = "WSJ U.S."
 				@lang = "en-US"

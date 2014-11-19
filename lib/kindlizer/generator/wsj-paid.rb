@@ -41,9 +41,9 @@ module Kindlizer
 				FileUtils.cp( "./resource/wsj.css", @dst_dir )
 			end
 
-			def generate( now )
-				@now = now
-				@now_str = now.strftime '%Y-%m-%d %H:%M'
+			def generate(opts)
+				@now = opts[:now]
+				@now_str = @now.strftime '%Y-%m-%d %H:%M'
 				@title = "WSJ日本版"
 				@lang = "ja-JP"
 

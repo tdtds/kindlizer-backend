@@ -22,7 +22,7 @@ module Kindlizer::Backend
 		end
 
 		def task( hour )
-			@conf[:task][hour.to_i] || []
+			@conf[:schedule][hour.to_i] || []
 		end
 
 		def replace( conf_new )
