@@ -1,5 +1,7 @@
 ---
-:mailto: exsample@free.kindle.com
+:mailto:
+- exsample@free.kindle.com
+- dropbox:/news
 :mailfrom: hoge@example.com
 :tz: "+09:00"
 :task:
