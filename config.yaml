@@ -1,10 +1,32 @@
 ---
-:mailto: exsample@free.kindle.com
-:mailfrom: hoge@example.com
+:sender: hoge@example.com
 :tz: "+09:00"
-:task:
+:tasks:
+  newspaper:
+    :media:
+    - nikkei-free
+    - wsj-paid
+    :receiver:
+    - reader1@kindle.com
+    - reader2@kindle.com
+    - dropbox:/news
+  watch:
+    :media:
+    - internet-watch
+    :receiver:
+    - reader1@kindle.com
+    - dropbox:/watch
+  diary:
+    :media:
+    - tdiary
+    :option:
+      tdiary_top: http://sho.tdiary.net/
+    :receiver:
+    - reader2@kindle.com
+:schedule:
   4:
-  - nikkei-free
-  - internet-watch
-  18:
-  - nikkei-free
+  - newspaper
+  17:
+  - newspaper
+  - watch
+  - diary

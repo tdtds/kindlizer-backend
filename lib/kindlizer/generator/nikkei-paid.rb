@@ -28,9 +28,9 @@ module Kindlizer
 				FileUtils.cp( "./resource/nikkei.css", @dst_dir )
 			end
 
-			def generate( now )
-				@now = now
-				@now_str = now.strftime '%Y-%m-%d %H:%M'
+			def generate(opts)
+				@now = opts[:now]
+				@now_str = @now.strftime '%Y-%m-%d %H:%M'
 
 				agent = Mechanize::new
 				agent.set_proxy( *ENV['HTTP_PROXY'].split( /:/ ) ) if ENV['HTTP_PROXY']

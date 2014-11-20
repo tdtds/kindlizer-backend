@@ -7,7 +7,7 @@ describe 'internet-watch generator' do
 	context 'normal' do
 		it 'makes OPF file' do
 			Dir.mktmpdir do |dir|
-				Kindlizer::Generator::InternetWatch::new( dir ).generate( Time::now ) do |opf|
+				Kindlizer::Generator::InternetWatch::new(dir).generate({now: Time::now}) do |opf|
 					expect(opf).to eq "#{dir}/dst/internet-watch.opf"
 				end
 			end

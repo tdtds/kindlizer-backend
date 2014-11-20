@@ -28,7 +28,8 @@ module Kindlizer
 				FileUtils.cp( "./resource/internet-watch.css", @dst_dir )
 			end
 
-			def generate( now )
+			def generate(opts)
+				now = opts[:now]
 				items = []
 				
 				rdf_file = "#{TOP}/cda/rss/internet.rdf"

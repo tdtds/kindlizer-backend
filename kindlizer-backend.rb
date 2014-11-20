@@ -26,7 +26,16 @@ module Kindlizer::Backend
 		$logger.info "Staring action on #{now}."
 		conf.task( now.hour ).each do |task|
 			$logger.info "starting #{task}"
-			Task::new( task ).run( conf[:mailto], conf[:mailfrom], now )
+
+			opts = {:now => now}.update(conf[:tasks][task][:option] || {})
+			conf[:tasks][task][:media].each do |media|
+				$logger.info "getting media #{media}"
+				begin
+					Task::new(media).run(conf[:tasks][task][:receiver], conf[:sender], opts)
+				rescue
+					$logger.error($!)
+				end
+			end
 		end
 	end
 

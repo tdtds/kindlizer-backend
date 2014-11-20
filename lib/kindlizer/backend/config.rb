@@ -10,6 +10,8 @@ require 'open-uri'
 require 'pathname'
 
 module Kindlizer::Backend
+	class ConfigError < StandardError; end
+
 	class Config
 		def initialize( uri )
 			@uri = uri
@@ -22,7 +24,7 @@ module Kindlizer::Backend
 		end
 
 		def task( hour )
-			@conf[:task][hour.to_i] || []
+			@conf[:schedule][hour.to_i] || []
 		end
 
 		def replace( conf_new )
@@ -37,6 +39,7 @@ module Kindlizer::Backend
 	private
 		def load
 			@conf = YAML::load( open( @uri, {:proxy => nil}, &:read ) )
+			raise ConfigError.new("Update config file because it is old format.") if @conf[:task]
 		end
 	end
 end

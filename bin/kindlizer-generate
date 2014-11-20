@@ -15,7 +15,7 @@ ARGV.each do |task|
 	require "kindlizer/generator/#{task}"
 	gen = Kindlizer::Generator.const_get( task.split(/-/).map{|a| a.capitalize}.join )
 	Dir::mkdir( task )
-	gen.new( task ).generate( Time::now ) do |opf|
+	gen.new( task ).generate({now:Time::now}) do |opf|
 		Kindlegen.run( opf, '-o', "#{task}.mobi" )
 	end
 end
