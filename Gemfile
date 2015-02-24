@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.2.0'
 
 gem 'clockwork'
 gem 'kindlegen'
 gem 'systemu'
-gem 'mail', '2.4.4'
+gem 'mail'
 gem 'mechanize'
 gem 'nokogiri'
 gem 'dropbox-sdk'
-gem 'mongoid', '~> 3'
+gem 'mongoid'
 
 group :development, :test do
 	gem 'pry'
