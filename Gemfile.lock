@@ -16,7 +16,7 @@ GEM
       activesupport
       tzinfo
     coderay (1.1.0)
-    connection_pool (2.1.1)
+    connection_pool (2.1.2)
     diff-lcs (1.2.5)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
