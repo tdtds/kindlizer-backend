@@ -1,4 +1,5 @@
 .bundle
+.env
 vendor
 nikkei-paid
 nikkei-free
