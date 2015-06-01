@@ -88,18 +88,20 @@ module Kindlizer
 		private
 
 			def auth
-				id, pw = nil, nil
-				begin
-					require 'pit'
-					login = Pit::get( 'nikkei', :require => {
-						'user' => 'your ID of Nikkei.',
-						'pass' => 'your Password of Nikkei.',
-					} )
-					id = login['user']
-					pw = login['pass']
-				rescue LoadError # no pit library, using environment variables
-					id = ENV['NIKKEI_ID']
-					pw = ENV['NIKKEI_PW']
+				id = ENV['NIKKEI_ID']
+				pw = ENV['NIKKEI_PW']
+				if !id || !pw
+					begin
+						require 'pit'
+						login = Pit::get( 'nikkei', :require => {
+							'user' => 'your ID of Nikkei.',
+							'pass' => 'your Password of Nikkei.',
+						} )
+						id = login['user']
+						pw = login['pass']
+					rescue LoadError # no pit library, using environment variables
+						id, pw = nil, nil
+					end
 				end
 				return id, pw
 			end
