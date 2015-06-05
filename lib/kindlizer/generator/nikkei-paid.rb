@@ -37,6 +37,7 @@ module Kindlizer
 
 				toc = []
 				if @nikkei_id and @nikkei_pw
+					agent.get('https://regist.nikkei.com/ds/etc/accounts/logout')
 					agent.get( LOGIN )
 					agent.page.form_with( :name => 'autoPostForm' ).submit
 					agent.page.form_with( :name => 'LA0210Form01' ) do |form|
@@ -82,6 +83,10 @@ module Kindlizer
 				begin
 					generate_contents( toc, agent )
 					yield "#{@dst_dir}/#{basename}.opf"
+				end
+
+				if @nikkei_id and @nikkei_pw
+					agent.get('https://regist.nikkei.com/ds/etc/accounts/logout')
 				end
 			end
 
