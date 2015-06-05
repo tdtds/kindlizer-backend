@@ -215,18 +215,23 @@ module Kindlizer
 				return '' unless aid
 				html = get_html_item( agent, uri )
 
-				open( "#{@dst_dir}/#{aid}.html", 'w:utf-8' ) do |f|
-					f.puts canonical( html_header( (html / 'h4.cmn-article_title, h2.cmn-article_title')[0].text.strip ) )
-					f.puts scrape_html_item( html )
-					(html / 'div.cmn-article_nation ul li a').map {|link|
-						link.attr( 'href' )
-					}.sort.uniq.each_with_index do |link,index|
-						f.puts scrape_html_item( get_html_item( agent, link, index + 2 ) )
+				begin
+					open( "#{@dst_dir}/#{aid}.html", 'w:utf-8' ) do |f|
+						f.puts canonical( html_header( (html / 'h1.cmn-article_title, h4.cmn-article_title, h2.cmn-article_title')[0].text.strip ) )
+						f.puts scrape_html_item( html )
+						(html / 'div.cmn-article_nation ul li a').map {|link|
+							link.attr( 'href' )
+						}.sort.uniq.each_with_index do |link,index|
+							f.puts scrape_html_item( get_html_item( agent, link, index + 2 ) )
+						end
+						f.puts html_footer
 					end
-					f.puts html_footer
-				end
 
-				%Q|\t\t<li><a href="#{aid}.html">#{item}</a></li>|
+					%Q|\t\t<li><a href="#{aid}.html">#{item}</a></li>|
+				rescue NoMethodError
+					$stderr.puts "page parsing faild. #{aid}"
+					$stderr.puts $!
+				end
 			end
 
 			def html_footer
