@@ -103,6 +103,3 @@ DEPENDENCIES
   rake
   rspec
   systemu
-
-BUNDLED WITH
-   1.10.4
