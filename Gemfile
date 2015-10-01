@@ -9,7 +9,7 @@ gem 'mail'
 gem 'mechanize'
 gem 'nokogiri'
 gem 'dropbox-sdk'
-gem 'mongoid'
+gem 'mongoid', '~> 5.0'
 
 group :development, :test do
 	gem 'pry'

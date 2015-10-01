@@ -58,7 +58,7 @@ module Kindlizer::Backend
 			}
 		end
 		if ENV['MONGOLAB_URI']
-			DupChecker.setup({sessions:{default:{uri:ENV['MONGOLAB_URI']}}})
+			DupChecker.setup({clients:{default:{uri:ENV['MONGOLAB_URI']}}})
 		end
 		Clockwork::every( 1.hour, conf, :at => '*:04' )
 	else

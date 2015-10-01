@@ -11,6 +11,7 @@ module Kindlizer; end
 
 module Kindlizer::Backend
 	class DupChecker
+		Mongo::Logger.level = Logger::WARN
 		@@mongoid_conf = nil
 
 		include Mongoid::Document
@@ -24,7 +25,7 @@ module Kindlizer::Backend
 
 		def self.dup?(uri)
 			return false unless @@mongoid_conf
-			Mongoid::Config.load_configuration(@@mongoid_conf) if Mongoid::Config.sessions.size == 0
+			Mongoid::Config.load_configuration(@@mongoid_conf) if Mongoid::Config.clients.size == 0
 
 			begin
 				url = uri.to_s

@@ -41,7 +41,7 @@ GEM
     mime-types (2.6.2)
     mini_portile (0.6.2)
     minitest (5.8.1)
-    mongo (2.1.0)
+    mongo (2.1.1)
       bson (~> 3.0)
     mongoid (5.0.0)
       activemodel (~> 4.0)
@@ -92,7 +92,7 @@ DEPENDENCIES
   kindlegen
   mail
   mechanize
-  mongoid
+  mongoid (~> 5.0)
   nokogiri
   pit
   pry
