@@ -21,10 +21,10 @@ module Kindlizer
 
 				html = retry_loop( 5 ) do
 					Nokogiri(open("#{@top}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
+					title = (html / 'head title').text
+					author = (html / 'head meta[name="author"]')[0]['content']
+					now_str = now.strftime( '%m-%d' )
 				end
-				title = (html / 'head title').text
-				author = (html / 'head meta[name="author"]')[0]['content']
-				now_str = now.strftime( '%m-%d' )
 
 				#
 				# generating html
