@@ -19,8 +19,9 @@ module Kindlizer
 				now = opts[:now]
 				@top = opts['tdiary_top']
 
-				html = retry_loop( 5 ) do
-					Nokogiri(open("#{@top}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
+				html = title = author = now_str = nil
+				retry_loop( 5 ) do
+					html = Nokogiri(open("#{@top}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
 					title = (html / 'head title').text
 					author = (html / 'head meta[name="author"]')[0]['content']
 					now_str = now.strftime( '%m-%d' )
