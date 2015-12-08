@@ -20,11 +20,15 @@ module Kindlizer
 				@top = opts['tdiary_top']
 
 				html = title = author = now_str = nil
-				retry_loop( 5 ) do
-					html = Nokogiri(open("#{@top}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
-					title = (html / 'head title').text
-					author = (html / 'head meta[name="author"]')[0]['content']
-					now_str = now.strftime( '%m-%d' )
+				begin
+					retry_loop( 5 ) do
+						html = Nokogiri(open("#{@top}?date=#{now.strftime '%m%d'}", 'r:utf-8', &:read))
+						title = (html / 'head title').text
+						author = (html / 'head meta[name="author"]')[0]['content']
+						now_str = now.strftime( '%m-%d' )
+					end
+				rescue => e
+					$stderr.puts "failed by retry over: #{e.class}: #{e}"
 				end
 
 				#
