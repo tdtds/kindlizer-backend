@@ -12,6 +12,8 @@ require 'pathname'
 module Kindlizer
 	module Generator
 		class NikkeiPaid
+			class IllegalPage < StandardError; end
+
 			TOP = 'http://www.nikkei.com'
 			LOGIN = "#{TOP}/etc/accounts/login?dps=3&amp;pageflag=top&amp;url=http%3A%2F%2Fwww.nikkei.com%2F"
 
@@ -214,9 +216,10 @@ module Kindlizer
 				aid = uri2aid( uri )
 				return '' unless aid
 				html = get_html_item( agent, uri )
+				out_file = "#{@dst_dir}/#{aid}.html"
 
 				begin
-					open( "#{@dst_dir}/#{aid}.html", 'w:utf-8' ) do |f|
+					open( out_file, 'w:utf-8' ) do |f|
 						f.puts canonical( html_header( (html / 'h1.cmn-article_title, h4.cmn-article_title, h2.cmn-article_title')[0].text.strip ) )
 						f.puts scrape_html_item( html )
 						(html / 'div.cmn-article_nation ul li a').map {|link|
@@ -231,6 +234,8 @@ module Kindlizer
 				rescue NoMethodError
 					$stderr.puts "page parsing faild. #{aid}"
 					$stderr.puts $!
+					File.delete out_file
+					raise IllegalPage.new
 				end
 			end
 
@@ -337,11 +342,14 @@ module Kindlizer
 								html.puts "\t<ul>"
 								first = false
 							else
-								html.puts html_item( article[0], article[1], agent )
-								ncx.puts ncx_item( article[0], article[1], toc_index += 1 )
-								unless aids.index( uri2aid( article[1] ) )
-									opf.puts opf_item( article[1] )
-									aids << uri2aid( article[1] ) if uri2aid( article[1] )
+								begin
+									html.puts html_item( article[0], article[1], agent )
+									ncx.puts ncx_item( article[0], article[1], toc_index += 1 )
+									unless aids.index( uri2aid( article[1] ) )
+										opf.puts opf_item( article[1] )
+										aids << uri2aid( article[1] ) if uri2aid( article[1] )
+									end
+								rescue IllegalPage
 								end
 							end
 						end
