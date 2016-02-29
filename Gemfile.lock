@@ -10,14 +10,14 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    bson (4.0.2)
+    bson (4.0.3)
     builder (3.2.2)
     clockwork (1.2.0)
       activesupport
       tzinfo
     coderay (1.1.1)
     diff-lcs (1.2.5)
-    domain_name (0.5.20160128)
+    domain_name (0.5.20160216)
       unf (>= 0.0.5, < 1.0.0)
     dropbox-sdk (1.6.5)
       json
@@ -25,7 +25,7 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
-    kindlegen (2.9.6)
+    kindlegen (2.9.7)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mechanize (2.7.4)
