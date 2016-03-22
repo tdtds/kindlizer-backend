@@ -17,7 +17,7 @@ GEM
       tzinfo
     coderay (1.1.1)
     diff-lcs (1.2.5)
-    domain_name (0.5.20160309)
+    domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     dropbox-sdk (1.6.5)
       json
