@@ -118,9 +118,11 @@ module Kindlizer
 			end
 
 			def save_image(img)
+				require 'securerandom'
+
 				img = @top + img if /^https?:/ !~ img
 				uri = URI(img)
-				file_name = uri.path.gsub(%r|[/%]|, '_')
+				file_name = "#{SecureRandom.hex}#{uri.to_s.scan(/\.[^\.]+$/)[0]}"
 				begin
 					open("#{@current_dir}/#{file_name}", 'w') do |f|
 						f.write open(uri, &:read)
