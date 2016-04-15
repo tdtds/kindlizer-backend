@@ -138,16 +138,16 @@ module Kindlizer
 			end
 
 			def html_header( title )
-				<<-HTML.gsub( /^\t/, '' )
-				<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-				<html>
-				<head>
-					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-					<title>#{title}</title>
-					<link rel="stylesheet" href="nikkei.css" type="text/css" media="all"></link>
-				</head>
-				<body>
-					<h1>#{title}</h1>
+				<<~HTML
+					<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+					<html>
+					<head>
+						<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+						<title>#{title}</title>
+						<link rel="stylesheet" href="nikkei.css" type="text/css" media="all"></link>
+					</head>
+					<body>
+						<h1>#{title}</h1>
 				HTML
 			end
 
@@ -240,20 +240,20 @@ module Kindlizer
 			end
 
 			def html_footer
-				<<-HTML.gsub( /^\t/, '' )
-				</body>
-				</html>
+				<<~HTML
+					</body>
+					</html>
 				HTML
 			end
 
 			def ncx_header
-				<<-XML.gsub( /^\t/, '' )
-				<?xml version="1.0" encoding="UTF-8"?>
-				<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
-				<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
-				<docTitle><text>日経電子版 (#{@now_str})</text></docTitle>
-				<navMap>
-					<navPoint id="toc" playOrder="0"><navLabel><text>Table of Contents</text></navLabel><content src="toc.html" /></navPoint>
+				<<~XML
+					<?xml version="1.0" encoding="UTF-8"?>
+					<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+					<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+					<docTitle><text>日経電子版 (#{@now_str})</text></docTitle>
+					<navMap>
+						<navPoint id="toc" playOrder="0"><navLabel><text>Table of Contents</text></navLabel><content src="toc.html" /></navPoint>
 				XML
 			end
 
@@ -263,33 +263,33 @@ module Kindlizer
 			end
 
 			def ncx_footer
-				<<-XML.gsub( /^\t/, '' )
-				</navMap>
-				</ncx>
+				<<~XML
+					</navMap>
+					</ncx>
 				XML
 			end
 
 			def opf_header
-				<<-XML.gsub( /^\t/, '' )
-				<?xml version="1.0" encoding="utf-8"?>
-				<package unique-identifier="uid">
-					<metadata>
-						<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
-							<dc:Title>日経電子版 (#{@now_str})</dc:Title>
-							<dc:Language>ja-JP</dc:Language>
-							<dc:Creator>日本経済新聞社</dc:Creator>
-							<dc:Description>日経電子版、#{@now_str}生成</dc:Description>
-							<dc:Date>#{@now.strftime( '%d/%m/%Y' )}</dc:Date>
-						</dc-metadata>
-						<x-metadata>
-							<output encoding="utf-8" content-type="text/x-oeb1-document"></output>
-							<EmbeddedCover>nikkei.jpg</EmbeddedCover>
-						</x-metadata>
-					</metadata>
-					<manifest>
-						<item id="toc" media-type="application/x-dtbncx+xml" href="toc.ncx"></item>
-						<item id="style" media-type="text/css" href="nikkei.css"></item>
-						<item id="index" media-type="text/html" href="toc.html"></item>
+				<<~XML
+					<?xml version="1.0" encoding="utf-8"?>
+					<package unique-identifier="uid">
+						<metadata>
+							<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
+								<dc:Title>日経電子版 (#{@now_str})</dc:Title>
+								<dc:Language>ja-JP</dc:Language>
+								<dc:Creator>日本経済新聞社</dc:Creator>
+								<dc:Description>日経電子版、#{@now_str}生成</dc:Description>
+								<dc:Date>#{@now.strftime( '%d/%m/%Y' )}</dc:Date>
+							</dc-metadata>
+							<x-metadata>
+								<output encoding="utf-8" content-type="text/x-oeb1-document"></output>
+								<EmbeddedCover>nikkei.jpg</EmbeddedCover>
+							</x-metadata>
+						</metadata>
+						<manifest>
+							<item id="toc" media-type="application/x-dtbncx+xml" href="toc.ncx"></item>
+							<item id="style" media-type="text/css" href="nikkei.css"></item>
+							<item id="index" media-type="text/html" href="toc.html"></item>
 				XML
 			end
 
@@ -299,24 +299,20 @@ module Kindlizer
 			end
 
 			def opf_footer( aids )
-				r = <<-XML.gsub( /^\t/, '' )
-				</manifest>
-				<spine toc="toc">
+				items = aids.map{|aid| %Q|\t<itemref idref="#{aid}" />|}
+				<<~XML
+					</manifest>
+					<spine toc="toc">
+						#{items.join("\n")}
+						<itemref idref="index" />
+					</spine>
+					<tours></tours>
+					<guide>
+					  <reference type="toc" title="Table of Contents" href="toc.html"></reference>
+					  <reference type="start" title="Top Story" href="#{aids[0]}.html"></reference>
+					</guide>
+					</package>
 				XML
-				aids.each do |aid|
-					r << %Q|\t<itemref idref="#{aid}" />\n|
-				end
-				r << <<-XML.gsub( /^\t/, '' )
-					<itemref idref="index" />
-				</spine>
-				<tours></tours>
-				<guide>
-				  <reference type="toc" title="Table of Contents" href="toc.html"></reference>
-				  <reference type="start" title="Top Story" href="#{aids[0]}.html"></reference>
-				</guide>
-				</package>
-				XML
-				r
 			end
 
 			def uri2aid( uri )
