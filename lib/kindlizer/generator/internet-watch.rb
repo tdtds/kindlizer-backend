@@ -60,7 +60,7 @@ module Kindlizer
 							f.puts html_header( item.title )
 							contents = (article / 'div.mainContents')
 							(contents / 'img').each do |img|
-								org = img.attr( 'src' )
+								org = img.attr('ajax') || img.attr('src')
 								begin
 									img_file = retry_loop( 5 ) do
 										open( "#{TOP}#{org}", &:read )
@@ -201,11 +201,11 @@ module Kindlizer
 			def get_article( uri )
 				cache = "#{@src_dir}/#{File::basename uri.path}"
 				begin
-					html = open( cache, 'r:Shift_JIS', &:read )
+					html = open( cache, &:read )
 				rescue Errno::ENOENT
 					#puts "getting article: #{uri.path}".encode( Encoding::default_external )
 					html = retry_loop( 5 ) do
-						open( uri, 'r:Shift_JIS', &:read )
+						open( uri, &:read )
 					end
 					open( cache, 'w' ){|f| f.write html }
 				end
