@@ -42,9 +42,9 @@ module Kindlizer
 					agent.get('https://regist.nikkei.com/ds/etc/accounts/logout')
 					agent.get( LOGIN )
 					agent.page.form_with( :name => 'autoPostForm' ).submit
-					agent.page.form_with( :name => 'LA0210Form01' ) do |form|
-						form['LA0210Form01:LA0210Email'] = @nikkei_id
-						form['LA0210Form01:LA0210Password'] = @nikkei_pw
+					agent.page.form_with( :name => 'LA7010Form01' ) do |form|
+						form['LA7010Form01:LA7010Email'] = @nikkei_id
+						form['LA7010Form01:LA7010Password'] = @nikkei_pw
 						form.click_button
 					end
 					agent.page.forms.first.submit
