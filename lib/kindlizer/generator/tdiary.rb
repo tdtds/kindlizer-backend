@@ -127,7 +127,7 @@ module Kindlizer
 					open("#{@current_dir}/#{file_name}", 'w') do |f|
 						f.write open(uri, &:read)
 					end
-				rescue OpenURI::HTTPError, RuntimeError
+				rescue OpenURI::HTTPError, RuntimeError, Errno::ENOENT
 					$stderr.puts "#$!: #{uri}"
 				end
 				return file_name
