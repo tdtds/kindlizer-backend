@@ -11,7 +11,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     bson (4.2.1)
-    builder (3.2.2)
+    builder (3.2.3)
     clockwork (2.0.0)
       activesupport
       tzinfo
@@ -24,7 +24,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    json (1.8.3)
+    json (1.8.6)
     kindlegen (3.0.3)
       rake
       rubyzip
@@ -104,9 +104,6 @@ DEPENDENCIES
   rake
   rspec
   systemu
-
-RUBY VERSION
-   ruby 2.3.3p222
 
 BUNDLED WITH
    1.13.6
