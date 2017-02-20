@@ -12,7 +12,7 @@ GEM
       tzinfo (~> 1.1)
     bson (4.2.1)
     builder (3.2.3)
-    clockwork (2.0.0)
+    clockwork (2.0.1)
       activesupport
       tzinfo
     coderay (1.1.1)
