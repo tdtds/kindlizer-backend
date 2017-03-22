@@ -11,7 +11,7 @@ GEM
       tzinfo (~> 1.1)
     bson (4.2.1)
     builder (3.2.3)
-    clockwork (2.0.1)
+    clockwork (2.0.2)
       activesupport
       tzinfo
     coderay (1.1.1)
@@ -53,7 +53,7 @@ GEM
       tzinfo (>= 0.3.37)
     net-http-digest_auth (1.4.1)
     net-http-persistent (2.9.4)
-    nokogiri (1.7.0.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     ntlm-http (0.1.1)
     origin (2.3.0)
