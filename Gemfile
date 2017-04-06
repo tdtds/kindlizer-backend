@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.3.0'
+ruby '~> 2.3.1'
 
 gem 'clockwork'
 gem 'kindlegen'
@@ -9,7 +9,7 @@ gem 'mail'
 gem 'mechanize'
 gem 'nokogiri'
 gem 'dropbox-sdk'
-gem 'mongoid', '~> 5.0'
+gem 'mongoid', '~> 6.1'
 
 group :development, :test do
 	gem 'pry'
