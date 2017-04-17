@@ -22,7 +22,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.1)
-    json (2.0.3)
+    json (2.0.4)
     kindlegen (3.0.3)
       rake
       rubyzip
@@ -80,7 +80,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.2)
+    unf_ext (0.0.7.3)
     webrobots (0.1.2)
 
 PLATFORMS
