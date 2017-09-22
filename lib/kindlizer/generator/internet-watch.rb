@@ -61,6 +61,7 @@ module Kindlizer
 							contents = (article / 'div.mainContents')
 							(contents / 'img').each do |img|
 								org = img.attr('ajax') || img.attr('src')
+								next if org =~ /^http/ # skip images on other servers
 								begin
 									img_file = retry_loop( 5 ) do
 										open( "#{TOP}#{org}", &:read )
