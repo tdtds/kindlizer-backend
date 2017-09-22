@@ -14,7 +14,7 @@ module Kindlizer
 		class NikkeiPaid
 			class IllegalPage < StandardError; end
 
-			TOP = 'http://www.nikkei.com'
+			TOP = 'https://www.nikkei.com'
 			LOGIN = "#{TOP}/etc/accounts/login?dps=3&amp;pageflag=top&amp;url=http%3A%2F%2Fwww.nikkei.com%2F"
 
 			def initialize( tmpdir )
@@ -152,7 +152,7 @@ module Kindlizer
 			end
 
 			def get_html_item( agent, uri, sub = nil )
-				uri.sub!( %r|^http://www.nikkei.com|, '' )
+				uri.sub!( %r|^https://www.nikkei.com|, '' )
 				aid = uri2aid( uri )
 				html = nil
 				if File::exist?( "#{@src_dir}/#{aid}#{sub}.html" ) # loading cache
@@ -192,7 +192,8 @@ module Kindlizer
 						when 'div'
 							e.css('img').each do |img|
 								image_url = img['src']
-								next if /^http/ =~ image_url
+								next if /^http/ =~ image_url # skip images in other server
+								next if /^\/\// =~ image_url # skip assets
 								image_file = File::basename( image_url )
 								begin
 									image = open( "#{TOP}#{image_url.sub /PN/, 'PB'}", &:read )
